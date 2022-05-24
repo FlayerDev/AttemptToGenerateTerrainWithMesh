@@ -18,7 +18,6 @@ public class MeshGenerator : MonoBehaviour
 
     [Range(.1f, .9f)] public float GroundLevel = 0.5f;
     [Range(.01f, .5f)] public float LakeLevel = .15f;
-    [Range(.5f, 1.5f)] public float NoiseEq = 1f;
 
     public float MapScale = 1.0f;
 
@@ -26,7 +25,7 @@ public class MeshGenerator : MonoBehaviour
     {
         get 
         { 
-           return new Vector2( MapScale * (xSize / 512), MapScale * (zSize / 512)); 
+           return new Vector2( MapScale * (xSize / 64), MapScale * (zSize / 64)); 
         }
 
     }
