@@ -13,23 +13,46 @@ public class MeshGenerator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
+    public bool updateMesh = false;
+    public bool updateConst = false;
+
     [Range(.1f, .9f)] public float GroundLevel = 0.5f;
     [Range(.01f, .5f)] public float LakeLevel = .15f;
     [Range(.5f, 1.5f)] public float NoiseEq = 1f;
 
-    public float Scale = 1.0f;
+    public float MapScale = 1.0f;
+
+    Vector2 Scale
+    {
+        get 
+        { 
+           return new Vector2( MapScale * (xSize / 512), MapScale * (zSize / 512)); 
+        }
+
+    }
 
     public float Seed = 0;
 
     public int xSize = 20;
     public int zSize = 20;
 
-    public float Size = 1f;
+    public float Size = 100f;
 
 
     void Start()
     {
         MeshInitializer();
+    }
+    private void FixedUpdate()
+    {
+        if (updateMesh)
+        {
+            updateMesh = false;
+            CreateShape();
+            UpdateMesh();
+            print("MeshRecreated");
+        }
+
     }
 
     void MeshInitializer()
@@ -50,7 +73,7 @@ public class MeshGenerator : MonoBehaviour
             for (int x = 0; x <= xSize; x++)
             {
                 float y;
-                y = Mathf.PerlinNoise(x / (float)xSize * Scale + Seed, z / (float)zSize * Scale + Seed) * Size;
+                y = Mathf.PerlinNoise(x / (float)xSize * Scale.x + Seed, z / (float)zSize * Scale.y + Seed) * Size;
                 if (y < GroundLevel * Size && y > LakeLevel * Size)
                 {
                     y = GroundLevel * Size;
@@ -93,7 +116,7 @@ public class MeshGenerator : MonoBehaviour
             }
         }
     }
-    void UpdateMesh()
+    public void UpdateMesh()
     {
         mesh.Clear();
         mesh.vertices = vertices;
