@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
-    Vector2 GridPosition;
+    public MeshGenerator ChunkMesh;
+    Vector2Int GridPosition;
+    private void Start()
+    {
+        ChunkMesh = this.gameObject.AddComponent<MeshGenerator>();
+    }
 }
